@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PowerMaster : MonoBehaviour
 {
-    float power;
-    public delegate void PowerChange(float power, bool lower);
+    [SerializeField] float power;
+    public delegate void PowerChange(float power);
     public delegate void collectPower();
     public static event PowerChange OnPowerChange;
     public static event collectPower OnPowerCollection;
+    public static event collectPower OnBreakerTrip;
     float _power;
     float drain;
     
@@ -28,7 +29,7 @@ public class PowerMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnPowerChange?.Invoke(power, false);
+        OnPowerChange?.Invoke(power);
         StartCoroutine(powerCollection());
     }
 
@@ -37,18 +38,24 @@ public class PowerMaster : MonoBehaviour
     private IEnumerator powerCollection()
     {
         _power = 0;
+        drain = 0;
         OnPowerCollection?.Invoke();
-        if(power < drain)
+        if(_power < drain)
         {
-            //trip breaker
+            OnBreakerTrip?.Invoke();
+        }
+        else
+        {
+            _power -= drain;
         }
         if (power != _power)
         {
-            //power has changed, inform all things relying on this, and add the true/false result of if the current power is lower than the previous power
-            OnPowerChange(_power, power > _power);
+            
+            OnPowerChange?.Invoke(_power);
             power = _power;
         }
         yield return new WaitForSeconds(0.1f);
+        StartCoroutine(powerCollection());
     }
 
 

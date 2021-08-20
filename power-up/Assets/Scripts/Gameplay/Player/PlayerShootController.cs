@@ -6,21 +6,32 @@ public class PlayerShootController : MonoBehaviour
 {
     Transform cam;
     RaycastHit hit;
-    [SerializeField] float force;
-    [SerializeField] bool auto;
-    [SerializeField] float fireRate;
+    [SerializeField] WeaponController selectedWeapon;
+    List<GameObject> availableWeapons = new List<GameObject>();
+    [SerializeField] Transform weaponPosition;
+    
     bool firing;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         cam = Camera.main.transform;
+        selectedWeapon.transform.parent = weaponPosition;
+        selectedWeapon.transform.localPosition = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!auto)
+        FiringManagement();
+        
+        
+    }
+
+
+    private void FiringManagement()
+    {
+        if (!selectedWeapon.auto)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -31,20 +42,20 @@ public class PlayerShootController : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                if(!firing)
+                if (!firing)
                 {
                     firing = true;
                     StartCoroutine(autoFire());
                 }
-                
+
             }
             else
             {
                 firing = false;
             }
         }
-        
     }
+
 
     private IEnumerator autoFire()
     {
@@ -52,17 +63,18 @@ public class PlayerShootController : MonoBehaviour
         {
             
             Shoot();
-            yield return new WaitForSeconds(1 / fireRate);
+            yield return new WaitForSeconds(1 / selectedWeapon.fireRate);
         }
     }
 
-    void Shoot()
+    public void Shoot()
     {
-        if(Physics.Raycast(cam.position, cam.forward, out hit))
+        if (Physics.Raycast(cam.position, cam.forward, out hit))
         {
             if (hit.collider.CompareTag("Wheel"))
             {
-                hit.collider.GetComponent<WheelController>().Hit(force);
+                
+                hit.collider.GetComponentInParent<WheelController>().Hit(selectedWeapon.force);
             }
         }
     }

@@ -7,3 +7,6 @@ public interface IInteractable
     public string RecieveTag();
     public void interact();
 }
+
+
+

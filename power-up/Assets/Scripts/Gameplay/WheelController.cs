@@ -8,6 +8,7 @@ public class WheelController : MonoBehaviour
     [SerializeField] float maxVelocity;
     [SerializeField] float resistance;
     [SerializeField] float powerPerRotation;
+    [SerializeField] float mass;
     float velocity;
     Vector3 rotation;
     float rps;
@@ -28,7 +29,7 @@ public class WheelController : MonoBehaviour
         rps = velocity / 360;
         if(velocity > 0)
         {
-            velocity -= resistance * Time.deltaTime;
+            velocity -= resistance/mass * Time.deltaTime;
             if(velocity < 0)
             {
                 velocity = 0;
@@ -44,10 +45,16 @@ public class WheelController : MonoBehaviour
 
     public void Hit(float force)
     {
-        velocity += force;
+        
+        
+        velocity += force/mass;
         if (velocity > maxVelocity)
             velocity = maxVelocity;
+
+
+
+
     }
 
-   
+
 }

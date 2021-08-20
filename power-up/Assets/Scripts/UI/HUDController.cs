@@ -14,7 +14,7 @@ public class HUDController : MonoBehaviour
         PowerMaster.OnPowerChange += updateWattage;
     }
 
-    private void updateWattage(float power, bool lower)
+    private void updateWattage(float power)
     {
         power = Mathf.Floor(power);
         wattageText.text = power.ToString();
