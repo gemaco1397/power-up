@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wheel
+  - GameMaster
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
+  - Building
+  - Don'trender
   - 
   - 
   - 

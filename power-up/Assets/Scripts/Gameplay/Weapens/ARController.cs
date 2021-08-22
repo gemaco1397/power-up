@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ARController : WeaponController
+public class ARController : PlayerWeaponController
 {
     // Start is called before the first frame update
     void Start()

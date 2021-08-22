@@ -7,40 +7,39 @@ public class PlayerLookController : MonoBehaviour
     Vector2 mouse;
     [SerializeField] float sensitivity = 10;
     Vector3 targetRotation;
+    PlayerMoveController PMC;
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         
+        PMC = PlayerMoveController.i;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Cursor.lockState == CursorLockMode.Locked)
+        if (PMC.alive)
         {
-            mouse.x = Input.GetAxis("Mouse X");
-            mouse.y = Input.GetAxis("Mouse Y");
-            mouse *= sensitivity * Time.deltaTime;
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (Cursor.lockState == CursorLockMode.Locked)
             {
-                Cursor.lockState = CursorLockMode.Locked;
+                mouse.x = Input.GetAxis("Mouse X");
+                mouse.y = Input.GetAxis("Mouse Y");
+                mouse *= sensitivity * Time.deltaTime;
+            }
+
+
+
+            if (mouse.x != 0)
+            {
+                rotatePlayer();
+            }
+            if (mouse.y != 0)
+            {
+
+                RotateEyes();
             }
         }
         
-
-        if(mouse.x != 0)
-        {
-            rotatePlayer();
-        }
-        if(mouse.y != 0)
-        {
-            
-            RotateEyes();
-        }
 
     }
 

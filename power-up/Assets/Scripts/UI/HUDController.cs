@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HUDController : MonoBehaviour
 {
 
     [Header("wattage")]
-    [SerializeField] private Text wattageText;
+    [SerializeField] private TextMeshProUGUI wattageText;
+    [SerializeField] private TextMeshProUGUI drainText;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         PowerMaster.OnPowerChange += updateWattage;
     }
 
-    private void updateWattage(float power)
+    private void updateWattage(float power, float drain)
     {
+        power += drain;
         power = Mathf.Floor(power);
-        wattageText.text = power.ToString();
+        drain = Mathf.Floor(drain);
+        wattageText.text = "generating: " + power.ToString();
+        drainText.text = "draining: " + drain.ToString();
     }
 }

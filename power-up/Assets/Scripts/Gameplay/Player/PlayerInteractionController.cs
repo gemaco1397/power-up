@@ -25,6 +25,10 @@ public class PlayerInteractionController : MonoBehaviour
         if(Physics.Raycast(cam.position, cam.forward, out hit, interactionRange))
         {
             targeted = hit.collider.GetComponent<IInteractable>();
+            if(targeted == null)
+            {
+                targeted = hit.collider.GetComponentInParent<IInteractable>();
+            }
         }
         else
         {
